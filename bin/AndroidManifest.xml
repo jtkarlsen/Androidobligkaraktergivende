@@ -7,14 +7,23 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
-
+	<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    
+    <permission android:name="com.example.androidobligkaraktergivende.permission.C2D_MESSAGE" 
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.androidobligkaraktergivende.permission.C2D_MESSAGE" />
+    
+    
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.androidobligkaraktergivende.MainActivity"
+            android:name="com.example.androidobligkaraktergivende.RegistrationActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +31,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="com.example.androidobligkaraktergivende.SettingsActivity"
+            android:label="@string/app_name">
+            
+        </activity>
+        <activity 
+            android:name="com.example.androidobligkaraktergivende.MainActivity"
+            android:label="@string/app_name">
+            
+        </activity>
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.example.androidobligkaraktergivende" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".GCMIntentService" />
+        
+        
     </application>
 
 </manifest>
