@@ -8,22 +8,19 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 
 public class PeopleFragment extends ListFragment {
-
-
+	
+	
+	private DBConnector con;
 	@Override
 	  public void onActivityCreated(Bundle savedInstanceState) {
 	    super.onActivityCreated(savedInstanceState);
 	    ArrayList<User> users = new ArrayList<User>();
+	    con = new DBConnector(getActivity());
+	    users = con.getAllUsers();
 
-	    
-	    
-	    User user = new User(1, "Håvard", Color.BLUE);
-	    
-	    users.add(user);
-	    
 	    PeopleArrayAdapter adapter = new PeopleArrayAdapter(getActivity(), users);
 	    setListAdapter(adapter);
 	    
-	    
+	    con.close();
 	  }
 }

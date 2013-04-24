@@ -8,7 +8,7 @@ public class MySQLiteDatabaseHelper extends SQLiteOpenHelper {
 
 	// Alle Statiske variabler
 		// Database Version
-		public static final int DATABASE_VERSION = 2;
+		public static final int DATABASE_VERSION = 6;
 
 		// Database navn
 		private static final String DATABASE_NAME = "tracking.db";
@@ -33,14 +33,14 @@ public class MySQLiteDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String CREATE_USER_TABLE = "CREATE TABLE "
 				+ TABLE_USER + "(" + U_ID
-							+"INTEGER PRIMARY KEY ," + U_NAME + " TEXT,"
-							+ U_COLOR + "INTEGER,"
-				+ U_CREATED_AT + "DATETIME );";
+							+" INTEGER PRIMARY KEY ," + U_NAME + " TEXT,"
+							+ U_COLOR + " INTEGER,"
+				+ U_CREATED_AT + " DATETIME );";
 		//SQL spørring som oppretter tabellen.
 		private static final String CREATE_USER_POS_TABLE = "CREATE TABLE "
 				+ TABLE_USER_POSTIONS + "(" + U_POS_ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + U_POS_USER_ID + " INTEGER,"
-			    + U_POS_LATITUDE + " REAL," + U_POS_LONGITUDE + " REAL,"+ U_CREATED_AT + "DATETIME,"
+			    + U_POS_LATITUDE + " REAL," + U_POS_LONGITUDE + " REAL,"+ U_CREATED_AT + " DATETIME,"
 			    		+ " FOREIGN KEY ("+U_POS_USER_ID+") REFERENCES "+TABLE_USER+" ("+U_ID+"));";
 	
 	

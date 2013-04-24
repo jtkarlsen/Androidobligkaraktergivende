@@ -13,6 +13,8 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
@@ -42,7 +44,7 @@ public class ServerUtil {
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
     private static final Random random = new Random();
-
+    
     /**
      * Register this account/device pair within the server.
      *
@@ -50,6 +52,8 @@ public class ServerUtil {
      */
     static boolean register(final Context context, final String regId, final String regName) {
         Log.i(TAG, "registering device (regId = " + regId + ")");
+        DBConnector con = new DBConnector(context);
+        
         String serverUrl = SERVER_URL + "/register";
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
@@ -64,6 +68,15 @@ public class ServerUtil {
 
                 post(serverUrl, params);
                 GCMRegistrar.setRegisteredOnServer(context, true);
+                if(con.userExists(0)){
+                	Log.d("USER_EXISTS", Boolean.toString(con.userExists(0)));
+                	con.updateUser(new User(0, regName, Color.CYAN));
+                }
+                else
+                {
+                	con.addUser(new User(0, regName, Color.CYAN));
+                }
+                con.close();
                 return true;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
@@ -80,13 +93,14 @@ public class ServerUtil {
                     // Activity finished before we complete - exit.
                     Log.d(TAG, "Thread interrupted: abort remaining retries!");
                     Thread.currentThread().interrupt();
+                    con.close();
                     return false;
                 }
                 // increase backoff exponentially
                 backoff *= 2;
             }
         }
-
+        con.close();
         return false;
     }
 
@@ -111,16 +125,20 @@ public class ServerUtil {
         }
     }
     
-    static void update(final Context context, final String regId){
+    static void update(final Context context, final double lat, double lon){
     	String serverUrl = SERVER_URL + "/update";
+    	DBConnector connection = new DBConnector(context);
+    	User user = connection.getUser(0);
+    	connection.close();
+    	
         Map<String, String> params = new HashMap<String, String>();
-        params.put("regId", regId);
-        params.put("regLat", "23.12312");
-        params.put("regLong", "180.000");
-        
+        params.put("regId", GCMRegistrar.getRegistrationId(context));
+        params.put("regName", user.getName());
+        params.put("regLat", Double.toString(lat));
+        params.put("regLong", Double.toString(lon));
+        Log.d("UPDATE", "update");
         try {
             post(serverUrl, params);
-            GCMRegistrar.setRegisteredOnServer(context, false);
 
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still

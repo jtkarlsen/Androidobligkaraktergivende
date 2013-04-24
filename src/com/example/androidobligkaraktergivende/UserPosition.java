@@ -5,7 +5,8 @@ import android.graphics.Color;
 public class UserPosition {
 	
 	
-	private int userId, id;
+	private int id;
+	private int userId;
 	private double longitude, latitude;
 	
 	

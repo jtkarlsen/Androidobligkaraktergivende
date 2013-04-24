@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DBConnector {
 
@@ -31,6 +32,7 @@ public class DBConnector {
 	
 	public DBConnector(Context context){
 		helper = new MySQLiteDatabaseHelper(context);
+		db = helper.getWritableDatabase();
 	}
 	
 	public void open() throws SQLException{
@@ -92,7 +94,7 @@ public class DBConnector {
 		ArrayList<User> users = new ArrayList<User>();
 
 		//kjører en spørring på databasen
-	    Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER_POSTIONS,
+	    Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER,
 	    		userColumns, null, null, null, null, null);
 
 	    //Flytter cursor til start og kjører igjennom alle radene og legger det til klassen.
@@ -105,6 +107,100 @@ public class DBConnector {
 	    // lukker cursor
 	    cursor.close();
 	    return users;
+	}
+	
+	public UserPosition getUserPosition(int userId){
+		UserPosition pos = null;
+		String selection = "user_id=?";
+		String[] selectionValue = {Integer.toString(userId)};
+		Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER_POSTIONS, userPosColumns, 
+				selection, selectionValue, null, null, null);
+		if(cursor.moveToFirst()){
+			pos = cursorToUserPosition(cursor);
+	    // lukker cursor
+		}
+	    cursor.close();
+	    return pos;
+		
+	}
+	
+	public UserPosition getLastUser(int userId){
+		UserPosition userPos = null;
+		String selection = "user_id=?";
+		String[] selectionValue = {Integer.toString(userId)};
+		Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER, userColumns, 
+				selection, selectionValue, null, null, "id desc limit 1");
+		if(cursor.moveToFirst()){
+			userPos = cursorToUserPosition(cursor);
+	    // lukker cursor
+		}
+	    cursor.close();
+	    return userPos;
+	}
+	
+	public User getUser(int userId){
+		User user = null;
+		String selection = "id=?";
+		String[] selectionValue = {Integer.toString(userId)};
+		Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER, userColumns, 
+				selection, selectionValue, null, null, null);
+		if(cursor.moveToFirst()){
+			user = cursorToUser(cursor);
+	    // lukker cursor
+		}
+	    cursor.close();
+	    return user;
+		
+	}
+	
+	public boolean userExists(int userId){
+		int count = -1;
+		
+		Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER, new String[]{"id"},
+				"id=?", new String[]{Integer.toString(userId)}, null,null,null);
+		if (cursor.moveToFirst()){
+			count = cursor.getInt(0);
+		}
+		cursor.close();
+		return count >= 0;
+		
+		
+	}
+	
+	public void updateUser(User user){
+		Log.d("CURSOR", user.getName());
+		String filter = "id=" + user.getId();
+		ContentValues args = new ContentValues();
+		args.put("name", user.getName());
+		db.update(MySQLiteDatabaseHelper.TABLE_USER, args, filter, null);
+		db.close();
+	}
+	
+	public void clearAllUserData(){
+		String where = "id != ?";
+		String whereArgs[] = {"0"};
+		
+		db.delete(MySQLiteDatabaseHelper.TABLE_USER_POSTIONS, null, null);
+		
+		db.delete(MySQLiteDatabaseHelper.TABLE_USER, where, whereArgs);
+		db.close();
+	}
+	
+	public void clearOwnUserData(){
+		String where = "user_id = ?";
+		String args[] = {"0"};
+		db.delete(MySQLiteDatabaseHelper.TABLE_USER_POSTIONS, where, args);
+		
+		db.close();
+	}
+	
+	public void clearRemoteUserData(){
+		String where = "user_id != ?";
+		String userWhere = "id != ?";
+		String args[] = {"0"};
+		db.delete(MySQLiteDatabaseHelper.TABLE_USER_POSTIONS, where, args);
+		db.delete(MySQLiteDatabaseHelper.TABLE_USER, userWhere, args);
+		db.close();
 	}
 	
 	

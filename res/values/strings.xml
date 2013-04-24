@@ -30,4 +30,18 @@
     <string name="username_hint_label">Username</string>
     <string name="register_button_label">Register</string>
     
+    <string name="pref_limits_cat_label">Update limits</string>
+    <string name="pref_distance_limit_label">Distance between update</string>
+   
+    <string name="pref_interval_default">
+        60000
+    </string>
+    <string name="pref_distance_default">
+        50
+    </string>
+    
+    <string name="network_error">No network connection..</string>
+    <string name="empty_username_error">Username can not be empty!</string>
+    
+    
 </resources>
