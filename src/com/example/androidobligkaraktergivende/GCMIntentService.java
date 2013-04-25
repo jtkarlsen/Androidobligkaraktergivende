@@ -1,6 +1,8 @@
 package com.example.androidobligkaraktergivende;
 
 import static com.example.androidobligkaraktergivende.ServerUtil.SENDER_ID;
+import static com.example.androidobligkaraktergivende.ServerUtil.sendUserPos;
+import static com.example.androidobligkaraktergivende.ServerUtil.SEND_USER_POS;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +18,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	public GCMIntentService() {
 		
         super(SENDER_ID);
+        
     }
 	
 	
@@ -34,21 +37,23 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String name = intent.getStringExtra("name");
 		double lat = Double.parseDouble(intent.getStringExtra("lat"));
 		double lon = Double.parseDouble(intent.getStringExtra("long"));
-		
+		String date = intent.getStringExtra("updated");
 		connection = new DBConnector(context);
-		
+		Log.d("DEBUG", "onMessage");
 		if(connection.userExists(id)){
-			userPos = new UserPosition(id, lon, lat);
+			userPos = new UserPosition(id, lat, lon);
+			userPos.setDate(date);
 			connection.addUserPosition(userPos);
+			connection.updateUser(new User(id, name, connection.getUser(id).getColor()));
 		}
 		else
 		{
 			user = new User(id, name, generateColor());
-			userPos = new UserPosition(id, lon, lat);
+			userPos = new UserPosition(id, lat, lon);
 			connection.addUser(user);
 			connection.addUserPosition(userPos);
 		}
-		connection.close();
+		sendUserPos(context, userPos, name);
 	}
 
 	@Override

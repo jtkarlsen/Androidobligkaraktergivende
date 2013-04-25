@@ -3,7 +3,9 @@ package com.example.androidobligkaraktergivende;
 import com.google.android.gcm.GCMRegistrar;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -12,15 +14,17 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.widget.Toast;
+import static com.example.androidobligkaraktergivende.PreferenceUtil.*;
+
+
 
 @SuppressLint("NewApi")
 public class SettingsFragment extends PreferenceFragment {
 
-	private static final String CLEAR_ALL = "pref_key_clear_all_data";
-	private static final String CLEAR_REMOTE = "pref_key_clear_remote_data";
-	private static final String CLEAR_OWN = "pref_key_clear_own_data";
+
 	private DBConnector connection;
 	private AsyncTask<Void, Void, Void> unregTask;
+	private LocationManager locationManager;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,8 +37,9 @@ public class SettingsFragment extends PreferenceFragment {
 		Preference clearAll = (Preference) findPreference(CLEAR_ALL);
 		Preference clearOwn = (Preference) findPreference(CLEAR_OWN);
 		Preference clearRemote = (Preference) findPreference(CLEAR_REMOTE);
-		Preference unreg = (Preference)findPreference("pref_key_unregistrer");
-		Preference username = (Preference)findPreference("pref_key_username");
+		Preference unreg = (Preference)findPreference(PREF_UNREGISTER);
+		Preference username = (Preference)findPreference(PREF_USERNAME);
+		Preference tracking = (Preference)findPreference(PREF_TRACKING);
 		
 		clearAll.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
@@ -45,7 +50,6 @@ public class SettingsFragment extends PreferenceFragment {
 				connection.clearAllUserData();
 				Toast.makeText(getActivity(), "Cleared all position data...",
 						Toast.LENGTH_SHORT).show();
-				connection.close();
 				return true;
 			}
 		});
@@ -58,7 +62,6 @@ public class SettingsFragment extends PreferenceFragment {
 				connection.clearOwnUserData();
 				Toast.makeText(getActivity(), "Cleared all position data...",
 						Toast.LENGTH_SHORT).show();
-				connection.close();
 				return true;
 			}
 		});
@@ -73,7 +76,6 @@ public class SettingsFragment extends PreferenceFragment {
 						Toast.makeText(getActivity(),
 								"Cleared all position data...",
 								Toast.LENGTH_SHORT).show();
-						connection.close();
 						return true;
 					}
 				});
@@ -127,7 +129,19 @@ public class SettingsFragment extends PreferenceFragment {
 				if(connection.userExists(0))
 					connection.updateUser(new User(0, (String)newValue, connection.getUser(0).getColor()));
 				
-				return false;
+				return true;
+			}
+		});
+		tracking.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				// TODO Auto-generated method stub
+				if((Boolean)newValue)
+					Toast.makeText(getActivity(), "Tracking started..", Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(getActivity(), "Tracking stoped..", Toast.LENGTH_SHORT).show();
+				return true;
 			}
 		});
 		

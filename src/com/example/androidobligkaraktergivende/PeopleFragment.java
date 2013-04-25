@@ -14,13 +14,16 @@ public class PeopleFragment extends ListFragment {
 	@Override
 	  public void onActivityCreated(Bundle savedInstanceState) {
 	    super.onActivityCreated(savedInstanceState);
-	    ArrayList<User> users = new ArrayList<User>();
+	    initPeople();
+	  }
+	
+	public void initPeople(){
+		ArrayList<User> users = new ArrayList<User>();
 	    con = new DBConnector(getActivity());
 	    users = con.getAllUsers();
 
 	    PeopleArrayAdapter adapter = new PeopleArrayAdapter(getActivity(), users);
 	    setListAdapter(adapter);
-	    
-	    con.close();
-	  }
+
+	}
 }

@@ -1,6 +1,5 @@
 package com.example.androidobligkaraktergivende;
 
-import android.graphics.Color;
 
 public class UserPosition {
 	
@@ -8,9 +7,9 @@ public class UserPosition {
 	private int id;
 	private int userId;
 	private double longitude, latitude;
+	private String date;
 	
-	
-	public UserPosition(int userId, double longitude, double latitude){
+	public UserPosition(int userId,double latitude, double longitude){
 		this.userId = userId;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -49,6 +48,20 @@ public class UserPosition {
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the date
+	 */
+	public String getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

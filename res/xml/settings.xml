@@ -6,10 +6,7 @@
         android:key="pref_key_trace"
         android:title="@string/pref_trace_label" />
 
-    <EditTextPreference
-        android:defaultValue=""
-        android:key="pref_key_username"
-        android:title="@string/pref_username_label" />
+    
 
     <PreferenceCategory 
         android:key="pref_key_limits_cat"
@@ -31,7 +28,10 @@
             android:defaultValue="@string/pref_interval_default"/>
     </PreferenceCategory>
     
-    
+    <EditTextPreference
+        android:defaultValue=""
+        android:key="pref_key_username"
+        android:title="@string/pref_username_label" />
     <PreferenceCategory
         android:key="pref_key_clear_data_cat"
         android:title="@string/pref_clear_data_cat_label" >

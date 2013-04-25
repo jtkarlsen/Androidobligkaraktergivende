@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
@@ -33,13 +34,17 @@ public class ServerUtil {
     /**
      * Intent used to display a message in the screen.
      */
-    static final String DISPLAY_MESSAGE_ACTION =
-            "com.example.androidobligkaraktergivende.DISPLAY_MESSAGE";
+    public static final String SEND_USER_POS =
+            "com.example.androidobligkaraktergivende.SEND_USER_POS";
 
     /**
      * Intent's extra that contains the message to be displayed.
      */
-    static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_LAT = "latitude";
+    public static final String EXTRA_LONG = "longitude";
+    public static final String EXTRA_USERID = "userId";
+    public static final String EXTRA_NAME = "name";
+    public static final String EXTRA_DATE = "date";
     
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
@@ -76,7 +81,6 @@ public class ServerUtil {
                 {
                 	con.addUser(new User(0, regName, Color.CYAN));
                 }
-                con.close();
                 return true;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
@@ -93,14 +97,12 @@ public class ServerUtil {
                     // Activity finished before we complete - exit.
                     Log.d(TAG, "Thread interrupted: abort remaining retries!");
                     Thread.currentThread().interrupt();
-                    con.close();
                     return false;
                 }
                 // increase backoff exponentially
                 backoff *= 2;
             }
         }
-        con.close();
         return false;
     }
 
@@ -129,7 +131,6 @@ public class ServerUtil {
     	String serverUrl = SERVER_URL + "/update";
     	DBConnector connection = new DBConnector(context);
     	User user = connection.getUser(0);
-    	connection.close();
     	
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", GCMRegistrar.getRegistrationId(context));
@@ -205,6 +206,15 @@ public class ServerUtil {
         }
       }
     
-    
+    public static void sendUserPos(Context context, UserPosition userPos, String name) {
+        Intent intent = new Intent(SEND_USER_POS);
+        intent.putExtra(EXTRA_USERID, userPos.getUserId());
+        intent.putExtra(EXTRA_LAT, userPos.getLatitude());
+        intent.putExtra(EXTRA_LONG, userPos.getLongitude());
+        intent.putExtra(EXTRA_NAME, name);
+        intent.putExtra(EXTRA_DATE, userPos.getDate());
+        Log.d("DEBUG", "sendUserPos"+ name);
+        context.sendBroadcast(intent);
+    }
 
 }
