@@ -9,10 +9,14 @@ package com.example.androidobligkaraktergivende;
 
 public final class R {
     public static final class array {
+        public static final int pref_color_entries=0x7f070004;
+        public static final int pref_color_values=0x7f070005;
         public static final int pref_distance_entries=0x7f070002;
         public static final int pref_distance_values=0x7f070003;
         public static final int pref_interval_entries=0x7f070000;
         public static final int pref_interval_values=0x7f070001;
+        public static final int pref_map_entries=0x7f070006;
+        public static final int pref_map_values=0x7f070007;
     }
     public static final class attr {
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
@@ -136,36 +140,45 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int color=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int ic_map=0x7f020002;
-        public static final int ic_people=0x7f020003;
-        public static final int ic_settings=0x7f020004;
+        public static final int ic_app=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int ic_log=0x7f020003;
+        public static final int ic_map=0x7f020004;
+        public static final int ic_people=0x7f020005;
+        public static final int ic_settings=0x7f020006;
     }
     public static final class id {
         public static final int error_view=0x7f050008;
+        public static final int event_date=0x7f05000c;
+        public static final int event_listitem_layout=0x7f050009;
+        public static final int event_name=0x7f05000a;
+        public static final int event_pos=0x7f05000b;
         public static final int fragment_container=0x7f050005;
         public static final int hybrid=0x7f050004;
-        public static final int listitem_layout=0x7f05000b;
-        public static final int map=0x7f050009;
-        public static final int map_button_id=0x7f05000e;
+        public static final int listitem_layout=0x7f05000e;
+        public static final int log_button_id=0x7f050014;
+        public static final int map=0x7f05000d;
+        public static final int map_button_id=0x7f050012;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int people_button_id=0x7f05000f;
+        public static final int people_button_id=0x7f050013;
         public static final int register_button=0x7f050007;
         public static final int satellite=0x7f050002;
-        public static final int settings_id=0x7f050010;
-        public static final int simulate_move=0x7f05000a;
+        public static final int settings_id=0x7f050015;
         public static final int terrain=0x7f050003;
-        public static final int user_color=0x7f05000c;
-        public static final int username=0x7f05000d;
+        public static final int textView1=0x7f050011;
+        public static final int user_color=0x7f05000f;
+        public static final int username=0x7f050010;
         public static final int username_field=0x7f050006;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_register=0x7f030001;
-        public static final int map_layout=0x7f030002;
-        public static final int people_layout=0x7f030003;
-        public static final int people_listitem_layout=0x7f030004;
+        public static final int event_listitem_layout=0x7f030002;
+        public static final int list_layout=0x7f030003;
+        public static final int map_layout=0x7f030004;
+        public static final int people_listitem_layout=0x7f030005;
+        public static final int settings_layout=0x7f030006;
     }
     public static final class menu {
         public static final int activity_main=0x7f090000;
@@ -181,6 +194,9 @@ containing a value of this type.
         /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
          */
         public static final int auth_client_requested_by_msg=0x7f060010;
+        public static final int clear_all_label=0x7f06002e;
+        public static final int clear_own_label=0x7f06002f;
+        public static final int clear_remote_data=0x7f060030;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -234,32 +250,44 @@ containing a value of this type.
         find the service-side assets. [CHAR LIMIT=25] 
          */
         public static final int common_signin_button_text_long=0x7f06000d;
+        public static final int date=0x7f060031;
         public static final int default_text=0x7f06001c;
-        public static final int empty_username_error=0x7f06002b;
+        public static final int empty_username_error=0x7f060024;
+        public static final int kicked_out=0x7f06003a;
+        public static final int lat=0x7f060032;
+        public static final int lng=0x7f060033;
+        public static final int log_label=0x7f06002d;
         public static final int map_label=0x7f060012;
-        public static final int network_error=0x7f06002a;
+        public static final int name=0x7f060034;
+        public static final int network_error=0x7f060023;
+        public static final int new_pos=0x7f060035;
         public static final int people_label=0x7f060014;
         public static final int pref_clear_all_data_label=0x7f060019;
-        public static final int pref_clear_all_data_summary=0x7f060021;
         public static final int pref_clear_data_cat_label=0x7f060018;
-        public static final int pref_clear_data_cat_summary=0x7f060020;
         public static final int pref_clear_own_data_label=0x7f06001a;
-        public static final int pref_clear_own_data_summary=0x7f060022;
         public static final int pref_clear_remote_data_label=0x7f06001b;
-        public static final int pref_clear_remote_data_summary=0x7f060023;
-        public static final int pref_distance_default=0x7f060029;
-        public static final int pref_distance_limit_label=0x7f060027;
-        public static final int pref_interval_default=0x7f060028;
+        public static final int pref_color_default=0x7f060029;
+        public static final int pref_color_label=0x7f060028;
+        public static final int pref_customize_cat_label=0x7f060027;
+        public static final int pref_distance_default=0x7f060022;
+        public static final int pref_distance_limit_label=0x7f060020;
+        public static final int pref_interval_default=0x7f060021;
         public static final int pref_interval_label=0x7f060016;
-        public static final int pref_interval_summary=0x7f06001e;
-        public static final int pref_limits_cat_label=0x7f060026;
+        public static final int pref_limits_cat_label=0x7f06001f;
+        public static final int pref_map_default=0x7f06002c;
+        public static final int pref_map_label=0x7f06002b;
+        public static final int pref_random_color_label=0x7f06002a;
+        public static final int pref_settings_cat_label=0x7f060025;
         public static final int pref_trace_label=0x7f060015;
-        public static final int pref_trace_summary=0x7f06001d;
+        public static final int pref_unregister_label=0x7f060026;
         public static final int pref_username_label=0x7f060017;
-        public static final int pref_username_summary=0x7f06001f;
-        public static final int register_button_label=0x7f060025;
+        public static final int randomize_color=0x7f060036;
+        public static final int register_button_label=0x7f06001e;
         public static final int setting_label=0x7f060013;
-        public static final int username_hint_label=0x7f060024;
+        public static final int start_tracking=0x7f060037;
+        public static final int stop_tracking=0x7f060038;
+        public static final int unregister_application=0x7f060039;
+        public static final int username_hint_label=0x7f06001d;
     }
     public static final class style {
         /** 

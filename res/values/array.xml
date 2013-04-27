@@ -32,5 +32,38 @@
         <item>500</item>
     </string-array>
     
+    <string-array name="pref_color_entries">
+        <item >Blue</item>
+        <item >Red</item>
+        <item >Green</item>
+        <item >Black</item>
+        <item >White</item>
+        <item >Yellow</item>
+    </string-array>
+    
+    <string-array name="pref_color_values">
+        <item >-16776961</item>
+        <item >-65536</item>
+        <item >-16711936</item>
+        <item >-16777216</item>
+        <item >-16711681</item>
+        <item >-256</item>
+    </string-array>
+    
+    <string-array name="pref_map_entries">
+        <item >Normal</item>
+        <item >Satellite</item>
+        <item >Terrain</item>
+        <item >Hybrid</item>
+    </string-array>
+    
+    <string-array name="pref_map_values">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+    </string-array>
+    
+    
     
 </resources>

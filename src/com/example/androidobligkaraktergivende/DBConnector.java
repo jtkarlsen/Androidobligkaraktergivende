@@ -8,13 +8,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
+/**
+ * Database kontakt klasse, har metoder for å snakke med databasen
+ * @author kakebake
+ *
+ */
 public class DBConnector {
 
-	private SQLiteDatabase db;
-	private MySQLiteDatabaseHelper helper;
+	private SQLiteDatabase db;				//SQLite databsen
+	private MySQLiteDatabaseHelper helper;	//Hjelpe klasse
 	
+	//kolonner i user_positions tabellen
 	private String[] userPosColumns = {
 			MySQLiteDatabaseHelper.U_POS_ID,
 			MySQLiteDatabaseHelper.U_POS_USER_ID,
@@ -22,6 +26,8 @@ public class DBConnector {
 			MySQLiteDatabaseHelper.U_POS_LONGITUDE,
 			MySQLiteDatabaseHelper.U_POS_CREATED_AT
 	};
+	
+	//kolonner i users tabellen
 	private String[] userColumns = {
 		MySQLiteDatabaseHelper.U_ID,
 		MySQLiteDatabaseHelper.U_NAME,
@@ -29,26 +35,40 @@ public class DBConnector {
 		MySQLiteDatabaseHelper.U_CREATED_AT
 	};
 	
-	
+	/**
+	 * Kontruktør
+	 * @param context
+	 */
 	public DBConnector(Context context){
 		helper = new MySQLiteDatabaseHelper(context);
 		
 	}
 	
+	/**
+	 * Åpner kontakt med databasen
+	 * @throws SQLException
+	 */
 	public void open() throws SQLException{
 		try{
 		db = helper.getWritableDatabase();
 		}catch(SQLException e){
 			db = helper.getReadableDatabase();
-			Log.d("SQLEXEPTION", e.getStackTrace().toString());
 		}
 	}
 	
+	/**
+	 * Lukker kontakt med databasen
+	 * @throws SQLException
+	 */
 	public void close()throws SQLException{
 		
 		helper.close();
 	}
 	
+	/**
+	 * Legger til posisjonsdata
+	 * @param userPos
+	 */
 	public void addUserPosition(UserPosition userPos){
 		open();
 		ContentValues values = new ContentValues();
@@ -65,6 +85,10 @@ public class DBConnector {
 		close();
 	}
 	
+	/**
+	 * Henter all posisjonsdata
+	 * @return
+	 */
 	public ArrayList<UserPosition> getAllUserPositions(){
 		open();
 		ArrayList<UserPosition> userPos = new ArrayList<UserPosition>();
@@ -86,6 +110,11 @@ public class DBConnector {
 	    return userPos;
 	}
 	
+	/**
+	 * Henter posisjonsdata basert på brukeid
+	 * @param userId
+	 * @return
+	 */
 	public ArrayList<UserPosition> getUsersPositions(int userId){
 		open();
 		ArrayList<UserPosition> userPos = new ArrayList<UserPosition>();
@@ -109,6 +138,10 @@ public class DBConnector {
 	    return userPos;
 	}
 	
+	/**
+	 * Legger til en ny bruker i databasen
+	 * @param user
+	 */
 	public void addUser(User user){
 		open();
 		ContentValues values = new ContentValues();
@@ -125,6 +158,10 @@ public class DBConnector {
 		close();
 	}
 	
+	/**
+	 * Henter alle brukere fra databasen
+	 * @return
+	 */
 	public ArrayList<User> getAllUsers(){
 		open();
 		ArrayList<User> users = new ArrayList<User>();
@@ -146,39 +183,32 @@ public class DBConnector {
 	    return users;
 	}
 	
-	public UserPosition getUserPosition(int userId){
-		open();
-		UserPosition pos = null;
-		String selection = "user_id=?";
-		String[] selectionValue = {Integer.toString(userId)};
-		Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER_POSTIONS, userPosColumns, 
-				selection, selectionValue, null, null, null);
-		if(cursor.moveToFirst()){
-			pos = cursorToUserPosition(cursor);
-	    // lukker cursor
-		}
-	    cursor.close();
-	    close();
-	    return pos;
-		
-	}
-	
-	public UserPosition getLastUser(int userId){
+	/**
+	 * Henter siste brukerposisjon.
+	 * @param userId
+	 * @return
+	 */
+	public UserPosition getLastUserPos(int userId){
 		open();
 		UserPosition userPos = null;
-		String selection = "user_id=?";
 		String[] selectionValue = {Integer.toString(userId)};
-		Cursor cursor = db.query(MySQLiteDatabaseHelper.TABLE_USER, userColumns, 
-				selection, selectionValue, null, null, "id desc limit 1");
+		Cursor cursor = db.rawQuery("Select * from user_positions where user_id = ? order by id desc limit 1", selectionValue);
+
 		if(cursor.moveToFirst()){
 			userPos = cursorToUserPosition(cursor);
-	    // lukker cursor
+	    
 		}
+		// lukker cursor
 	    cursor.close();
 	    close();
 	    return userPos;
 	}
 	
+	/**
+	 * Henter ut en bruker fra databasen
+	 * @param userId
+	 * @return
+	 */
 	public User getUser(int userId){
 		open();
 		User user = null;
@@ -188,14 +218,20 @@ public class DBConnector {
 				selection, selectionValue, null, null, null);
 		if(cursor.moveToFirst()){
 			user = cursorToUser(cursor);
-	    // lukker cursor
+	    
 		}
+		// lukker cursor
 	    cursor.close();
 	    close();
 	    return user;
 		
 	}
 	
+	/**
+	 * Sjekker at en bruker eksisterer
+	 * @param userId
+	 * @return
+	 */
 	public boolean userExists(int userId){
 		int count = -1;
 		open();
@@ -213,10 +249,10 @@ public class DBConnector {
 	
 	public void updateUser(User user){
 		open();
-		Log.d("CURSOR", user.getName());
 		String filter = "id=" + user.getId();
 		ContentValues args = new ContentValues();
 		args.put("name", user.getName());
+		args.put("color", user.getColor());
 		db.update(MySQLiteDatabaseHelper.TABLE_USER, args, filter, null);
 		close();
 	}

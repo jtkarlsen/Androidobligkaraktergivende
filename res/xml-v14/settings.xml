@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    
-
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    >
     
 	<PreferenceCategory 
         android:key="pref_key_settings_cat"
@@ -26,10 +24,17 @@
             android:entries="@array/pref_interval_entries"
             android:entryValues="@array/pref_interval_values"
             android:defaultValue="@string/pref_interval_default"/>
+        <ListPreference
+            android:key="pref_key_map_type"
+            android:title="@string/pref_map_label"
+            android:dialogTitle="@string/pref_map_label"
+            android:entries="@array/pref_map_entries"
+            android:entryValues="@array/pref_map_values"
+            android:defaultValue="@string/pref_map_default"/>
         <Preference 
         android:key="pref_key_unregistrer"
         android:title="@string/pref_unregister_label"/>
-</PreferenceScreen>
+
     </PreferenceCategory>
     <PreferenceCategory 
         android:key="pref_key_customize_cat"
@@ -64,3 +69,4 @@
             android:key="pref_key_clear_remote_data"
             android:title="@string/pref_clear_remote_data_label" />
     </PreferenceCategory>
+</PreferenceScreen>
